@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+hiimport React, { useEffect, useRef } from 'react';
 import { motion } from 'motion/react';
 import { MEDIA_ASSETS, BRAND_CONFIG } from '../constants/media';
 import { AnimatedText, AnimatedParagraph } from '@/components/ui/animated-text';
@@ -26,37 +26,44 @@ export const Hero: React.FC = () => {
   const hasAutoPlayedRef = useRef(false);
 
   useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
+  const video = videoRef.current;
+  if (!video) return;
 
-    // Reset video to beginning on every page load/reload
-    video.currentTime = 0;
-    video.muted = false;
-    video.volume = 1;
+  video.currentTime = 0;
+  video.volume = 1;
 
-    if (!hasAutoPlayedRef.current) {
-      hasAutoPlayedRef.current = true;
-      const playPromise = video.play();
+  const startVideo = async () => {
+    if (hasAutoPlayedRef.current) return;
+    hasAutoPlayedRef.current = true;
 
-      if (playPromise !== undefined) {
-        playPromise.catch((err) => {
-          console.info('Autoplay with sound attempted:', err?.message || err);
-        });
+    // First attempt: autoplay with original voice
+    try {
+      video.muted = false;
+      await video.play();
+    } catch (err) {
+      // Mobile browser blocked sound autoplay.
+      // Fallback: autoplay the video muted instead of leaving it stopped.
+      try {
+        video.muted = true;
+        await video.play();
+      } catch (fallbackErr) {
+        console.info('Autoplay blocked:', fallbackErr);
       }
     }
+  };
 
-    const handleEnded = () => {
-      // Play once only. Do NOT loop. After it finishes, keep the final frame visible.
-      video.pause();
-    };
+  startVideo();
 
-    video.addEventListener('ended', handleEnded);
+  const handleEnded = () => {
+    video.pause();
+  };
 
-    return () => {
-      video.removeEventListener('ended', handleEnded);
-    };
-  }, []);
+  video.addEventListener('ended', handleEnded);
 
+  return () => {
+    video.removeEventListener('ended', handleEnded);
+  };
+}, []);
   const handleVideoClick = () => {
     const video = videoRef.current;
     if (!video) return;
@@ -147,10 +154,11 @@ export const Hero: React.FC = () => {
               >
                 {/* Video element: full original frame, object-fit contain, no crop, no stretch */}
                 <video
-                  ref={videoRef}
-                  src={MEDIA_ASSETS.WELCOME_VIDEO}
-                  playsInline
-                  loop={false}
+  ref={videoRef}
+  src={MEDIA_ASSETS.WELCOME_VIDEO}
+  autoPlay
+  playsInline
+  loop={false}
                   preload="auto"
                   className="block w-full h-auto max-h-full object-contain object-center cursor-pointer"
                   style={{
