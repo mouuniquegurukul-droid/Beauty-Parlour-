@@ -1,4 +1,4 @@
-hiimport React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { motion } from 'motion/react';
 import { MEDIA_ASSETS, BRAND_CONFIG } from '../constants/media';
 import { AnimatedText, AnimatedParagraph } from '@/components/ui/animated-text';
