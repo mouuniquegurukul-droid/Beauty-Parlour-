@@ -170,7 +170,7 @@ export const Hero: React.FC = () => {
                 <video
   ref={videoRef}
   src={MEDIA_ASSETS.WELCOME_VIDEO}
-  autoPlay
+  
   playsInline
   loop={false}
                   preload="auto"
@@ -186,6 +186,15 @@ export const Hero: React.FC = () => {
                   aria-label="কল্পনা দেবনাথ - বাংলা স্বাগতম বার্তা"
                   onClick={handleVideoClick}
                 />
+                {!isPlaying && (
+  <button
+    type="button"
+    onClick={handlePlayWelcomeVideo}
+    className="absolute bottom-4 left-1/2 z-20 -translate-x-1/2 rounded-full bg-[#541C28] px-5 py-3 text-white shadow-lg"
+  >
+    🔊 স্বাগত বার্তা শুনুন
+  </button>
+)}
               </motion.div>
 
               {/* Thin Champagne-Gold Line animated underneath */}
