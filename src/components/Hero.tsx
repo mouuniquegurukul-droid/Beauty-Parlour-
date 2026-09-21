@@ -65,18 +65,32 @@ export const Hero: React.FC = () => {
   };
 }, []);
   const handleVideoClick = () => {
-    const video = videoRef.current;
-    if (!video) return;
+  const video = videoRef.current;
+  if (!video) return;
 
-    if (video.paused || video.ended) {
-      if (video.ended) {
-        video.currentTime = 0;
-      }
-      video.play().catch(() => {});
-    } else {
-      video.pause();
+  // First tap: turn on the original voice without pausing the video.
+  if (video.muted) {
+    video.muted = false;
+    video.volume = 1;
+
+    if (video.ended) {
+      video.currentTime = 0;
     }
-  };
+
+    video.play().catch(() => {});
+    return;
+  }
+
+  // Subsequent taps: pause or resume the video.
+  if (video.paused || video.ended) {
+    if (video.ended) {
+      video.currentTime = 0;
+    }
+    video.play().catch(() => {});
+  } else {
+    video.pause();
+  }
+};
 
   const handleScrollToPortfolio = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
