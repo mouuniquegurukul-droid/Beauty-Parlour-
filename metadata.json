@@ -1,0 +1,6 @@
+{
+  "name": "Bengali Bridal Beauty Portfolio",
+  "description": "পেশাদার বাঙালি ব্রাইডাল মেকআপ আর্টিস্টের প্রিমিয়াম সিনেমাটিক পোর্টফোলিও ও রূপসজ্জা গ্যালারি।",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
